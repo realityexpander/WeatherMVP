@@ -18,13 +18,13 @@ let save = (city, callback) => {
   // the MongoDB
   const newCity = {
     _id: city.woeid,
-    name: city.name,
+    name: city.title,
     temperature: city.temperature,
     cur_weather: city.cur_weather,
     description: city.description
   };
 
-  console.log(`newCity: ${newCity}`);
+  console.log(`newCity: ${JSON.stringify(newCity)}`);
 
   City.findOneAndUpdate(
     { _id: newCity._id },

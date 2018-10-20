@@ -25,7 +25,10 @@ class App extends React.Component {
       url: "http://localhost:1128/city",
       method: "POST",
       data: { cityname },
-      success: () => console.log(`${cityname} successfully searched!`)
+      success: () => {
+        console.log(`${cityname} successfully searched!`);
+        this.setState({ cities });
+      }
     });
   }
 
@@ -44,7 +47,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>Metaweather API</h1>
+        <h1>Metaweather MVP</h1>
         <CityList deleteCity={this.deleteCity} cities={this.state.cities} />
         <Search onSearch={this.search.bind(this)} />
       </div>

@@ -18,11 +18,31 @@ let getWeatherByCityname = (cityname, callback) => {
 
   console.log('*** metaweather.js cityname=', cityname);
   request(options, function (err, response, body) {
-    if (!err && response.statusCode === 201) {
+    if (!err && response.statusCode === 200) {
       var city = JSON.parse(body);
-      console.log(`data in metaweather request: ${JSON.stringify(data[0])}`);
-      data.forEach(city => cities.push(city));
-      callback(null, cities);
+      console.log(`data in metaweather request: ${JSON.stringify(city[0])}`);
+      //city.forEach(city => cities.push(city));
+
+      {
+        const option = { url: "https://www.metaweather.com/api/location/" + city[0].woeid }
+        request(option, (err, res, body) => {
+          if (!err && response.statusCode === 200) {
+            var city_weather = JSON.parse(body);
+            var resultCity = {};
+            console.log(`data in city_weather: ${JSON.stringify(city_weather)}`);
+            resultCity.woeid = city[0].woeid;
+            resultCity.title = city[0].title;
+            resultCity.temperature = city_weather.consolidated_weather[0].the_temp * 9 / 5 + 32;
+            resultCity.cur_weather = city_weather.consolidated_weather[0].weather_state_abbr;
+            resultCity.description = city_weather.consolidated_weather[0].weather_state_name;
+            cities.push(resultCity);
+            console.log('metaweather city=', JSON.stringify(resultCity));
+            console.log('metaweather Cities =', JSON.stringify(cities));
+            callback(null, cities);
+          }
+        })
+      }
+
     } else {
       console.log(`There was an error to the request to metaweather: ${err}`);
       callback(err, null);

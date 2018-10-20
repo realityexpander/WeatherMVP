@@ -21,6 +21,7 @@ app.post("/city", function (req, res) {
       throw err;
     } else {
       cities.forEach(city => {
+        console.log('cities forEach city=', JSON.stringify(city));
         db.save(city, (err, city) => {
           if (err) {
             throw err;
