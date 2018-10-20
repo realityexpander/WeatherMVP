@@ -17,12 +17,12 @@ class Search extends React.Component {
   render() {
     return (
       <div>
-        <h4>Add more repos!</h4>
-        Enter a github username:{" "}
+        <h4>Add your favorite cities</h4>
+        Enter a city name:{" "}
         <input value={this.state.term} onChange={this.onChange.bind(this)} />
         <button onClick={() => this.props.onSearch(this.state.term)}>
           {" "}
-          Add Repos{" "}
+          Add Cities{" "}
         </button>
       </div>
     );

@@ -2,34 +2,40 @@ import React from "react";
 import ReactDOM from "react-dom";
 import $ from "jquery";
 import Search from "./components/Search.jsx";
-import RepoList from "./components/RepoList.jsx";
+import CityList from "./components/CityList.jsx";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      repos: []
+      cities: []
     };
+    // bind delete city in here 
+    this.deleteCity = this.deleteCity.bind(this);
   }
 
-  search(username) {
+  deleteCity(event) {
+    console.log(event);
+  }
+
+  search(cityname) {
     // console.log(`${username} was searched`);
     // TODO
     $.ajax({
-      url: "http://localhost:1128/repos",
+      url: "http://localhost:1128/city",
       method: "POST",
-      data: { username },
-      success: () => console.log(`${username} successfully searched!`)
+      data: { cityname },
+      success: () => console.log(`${cityname} successfully searched!`)
     });
   }
 
   componentDidMount() {
     $.ajax({
-      url: "http://localhost:1128/repos",
+      url: "http://localhost:1128/cities",
       method: "GET",
-      success: repos => {
-        this.setState({ repos }, () =>
-          console.log(`current repos: ${this.state.repos}`)
+      success: cities => {
+        this.setState({ cities }, () =>
+          console.log(`current repos: ${this.state.cities}`)
         );
       }
     });
@@ -38,8 +44,8 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>Github Fetcher</h1>
-        <RepoList repos={this.state.repos} />
+        <h1>Metaweather API</h1>
+        <CityList deleteCity={this.deleteCity} cities={this.state.cities} />
         <Search onSearch={this.search.bind(this)} />
       </div>
     );

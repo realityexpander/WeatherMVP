@@ -1,59 +1,55 @@
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/fetcher");
-
-let repoSchema = mongoose.Schema({
-  // TODO: your schema here!
-  _id: Number,
-  name: String,
-  description: String,
-  html_url: String,
-  owner: String,
-  created_at: String,
-  stargazers_count: Number
+mongoose.connect("mongodb://127.0.0.1/weather", { useMongoClient: true }, function (err) {
+  if (err) console.log(err);
 });
 
-let Repo = mongoose.model("Repo", repoSchema);
+let citySchema = mongoose.Schema({
+  _id: Number,
+  name: String,
+  temperature: Number,
+  cur_weather: String,
+  description: String
+});
 
-let save = (repo, callback) => {
-  // TODO: Your code here
-  // This function should save a repo or repos to
+let City = mongoose.model("City", citySchema);
+
+let save = (city, callback) => {
+  // This function should save a city to
   // the MongoDB
-  const newRepo = {
-    _id: repo.id,
-    name: repo.name,
-    description: repo.description,
-    html_url: repo.html_url,
-    owner: repo.owner.login,
-    created_at: repo.created_at,
-    stargazers_count: repo.stargazers_count
+  const newCity = {
+    _id: city.woeid,
+    name: city.name,
+    temperature: city.temperature,
+    cur_weather: city.cur_weather,
+    description: city.description
   };
 
-  console.log(`newRepo: ${newRepo}`);
+  console.log(`newCity: ${newCity}`);
 
-  Repo.findOneAndUpdate(
-    { _id: newRepo._id },
-    newRepo,
+  City.findOneAndUpdate(
+    { _id: newCity._id },
+    newCity,
     { upsert: true },
-    (err, repo) => {
+    (err, city) => {
       if (err) {
         console.log(err);
         callback(err, null);
       } else {
-        callback(null, repo);
+        callback(null, city);
       }
     }
   );
 };
 
 let retrieve = callback => {
-  Repo.find()
-    .sort({ stargazers_count: -1 })
+  City.find()
+    .sort({ temperature: -1 })
     .limit(25)
-    .exec((err, repos) => {
+    .exec((err, cities) => {
       if (err) {
         callback(err, null);
       } else {
-        callback(null, repos);
+        callback(null, cities);
       }
     });
 };
