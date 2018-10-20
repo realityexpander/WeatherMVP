@@ -16,6 +16,7 @@ let City = mongoose.model("City", citySchema);
 let save = (city, callback) => {
   // This function should save a city to
   // the MongoDB
+
   const newCity = {
     _id: city.woeid,
     name: city.title,
@@ -24,18 +25,24 @@ let save = (city, callback) => {
     description: city.description
   };
 
+  // If city already exists
+  if (newCity.name === undefined) {
+    newCity.name = city.name;
+    newCity._id = city.woeid;
+  }
+
   console.log(`newCity: ${JSON.stringify(newCity)}`);
 
   City.findOneAndUpdate(
     { _id: newCity._id },
     newCity,
     { upsert: true },
-    (err, city) => {
+    (err, newCity) => {
       if (err) {
         console.log(err);
         callback(err, null);
       } else {
-        callback(null, city);
+        callback(null, newCity);
       }
     }
   );

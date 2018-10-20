@@ -22,18 +22,16 @@ app.post("/city", function (req, res) {
     } else {
       cities.forEach(city => {
         console.log('cities forEach city=', JSON.stringify(city));
-        db.save(city, (err, city) => {
+        db.save(city, (err, newcity) => {
           if (err) {
             throw err;
           } else {
-            console.log(`city added: ${city}`);
+            console.log(`city added: ${JSON.stringify(city)}`);
           }
+          res.status(201).send(cities);
         });
       });
     }
-
-    console.log("All cities were searched");
-    res.status(201).send();
   });
 });
 

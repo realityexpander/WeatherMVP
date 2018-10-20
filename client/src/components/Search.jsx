@@ -20,11 +20,10 @@ class Search extends React.Component {
         <h4>Add your favorite cities</h4>
         Enter a city name:{" "}
         <input value={this.state.term} onChange={this.onChange.bind(this)} />
-        <button onClick={() => this.props.onSearch(this.state.term)}>
-          {" "}
+        <button onClick={() => { this.props.onSearch(this.state.term); this.setState({ term: '' }); }}>
           Add Cities{" "}
         </button>
-      </div>
+      </div >
     );
   }
 }

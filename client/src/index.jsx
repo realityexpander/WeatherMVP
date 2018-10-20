@@ -25,12 +25,19 @@ class App extends React.Component {
       url: "http://localhost:1128/city",
       method: "POST",
       data: { cityname },
-      success: () => {
-        console.log(`${cityname} successfully searched!`);
-        this.setState({ cities });
+      success: (city) => {
+        console.log(`CLIENT: ${cityname} successfully searched!`);
+        for (let i of this.state.cities) {
+          if (city[0].woeid === i._id) {
+            console.log('City already exists.');
+            return;
+          }
+        }
+        this.setState({ cities: this.state.cities.concat(city) });
       }
     });
   }
+
 
   componentDidMount() {
     $.ajax({
@@ -38,7 +45,7 @@ class App extends React.Component {
       method: "GET",
       success: cities => {
         this.setState({ cities }, () =>
-          console.log(`current repos: ${this.state.cities}`)
+          console.log(`Current Cities: ${JSON.stringify(this.state.cities)}`)
         );
       }
     });

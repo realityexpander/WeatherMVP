@@ -18,10 +18,16 @@ let getWeatherByCityname = (cityname, callback) => {
 
   console.log('*** metaweather.js cityname=', cityname);
   request(options, function (err, response, body) {
+
     if (!err && response.statusCode === 200) {
       var city = JSON.parse(body);
       console.log(`data in metaweather request: ${JSON.stringify(city[0])}`);
       //city.forEach(city => cities.push(city));
+      if (city[0] === undefined) {
+        console.log('City not found in metaweather API');
+        callback(null, cities);
+        return;
+      }
 
       {
         const option = { url: "https://www.metaweather.com/api/location/" + city[0].woeid }
@@ -31,7 +37,7 @@ let getWeatherByCityname = (cityname, callback) => {
             var resultCity = {};
             console.log(`data in city_weather: ${JSON.stringify(city_weather)}`);
             resultCity.woeid = city[0].woeid;
-            resultCity.title = city[0].title;
+            resultCity.name = city[0].title;
             resultCity.temperature = city_weather.consolidated_weather[0].the_temp * 9 / 5 + 32;
             resultCity.cur_weather = city_weather.consolidated_weather[0].weather_state_abbr;
             resultCity.description = city_weather.consolidated_weather[0].weather_state_name;

@@ -3,7 +3,7 @@ import City from "./City.jsx";
 
 const CityList = props => (
   <div>
-    <h4> City List Component </h4>
+    <h4> Current Cities Tracked </h4>
     <table>
       <tbody>
         {props.cities[0]
