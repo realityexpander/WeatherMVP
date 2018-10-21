@@ -1,14 +1,19 @@
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://127.0.0.1/weather", { useMongoClient: true }, function (err) {
-  if (err) console.log(err);
-});
+mongoose.connect(
+  "mongodb://127.0.0.1/weather",
+  { useMongoClient: true },
+  function(err) {
+    if (err) console.log(err);
+  }
+);
 
 let citySchema = mongoose.Schema({
-  _id: Number,
-  name: String,
+  _id: Number, //woeid
+  woeid: Number,
+  title: String,
   temperature: Number,
   cur_weather: String,
-  description: String
+  weather_description: String
 });
 
 let City = mongoose.model("City", citySchema);
@@ -18,20 +23,15 @@ let save = (city, callback) => {
   // the MongoDB
 
   const newCity = {
-    _id: city.woeid,
-    name: city.title,
+    _id: city._id,
+    woeid: city.woeid,
+    title: city.title,
     temperature: city.temperature,
     cur_weather: city.cur_weather,
-    description: city.description
+    weather_description: city.weather_description
   };
 
-  // If city already exists
-  if (newCity.name === undefined) {
-    newCity.name = city.name;
-    newCity._id = city.woeid;
-  }
-
-  console.log(`newCity: ${JSON.stringify(newCity)}`);
+  console.log(`*** newCity: ${JSON.stringify(newCity)}`);
 
   City.findOneAndUpdate(
     { _id: newCity._id },
@@ -46,6 +46,18 @@ let save = (city, callback) => {
       }
     }
   );
+};
+
+let delete_city = (deleteCity, callback) => {
+  console.log("*** deleting city:", JSON.stringify(deleteCity));
+  City.findByIdAndRemove(deleteCity, (err, data) => {
+    if (err) {
+      console.log(err);
+      callback(err, null);
+    } else {
+      callback(null, data);
+    }
+  });
 };
 
 let retrieve = callback => {
@@ -63,3 +75,4 @@ let retrieve = callback => {
 
 module.exports.retrieve = retrieve;
 module.exports.save = save;
+module.exports.delete_city = delete_city;

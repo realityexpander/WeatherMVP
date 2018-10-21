@@ -10,12 +10,30 @@ class App extends React.Component {
     this.state = {
       cities: []
     };
-    // bind delete city in here 
+    // bind delete city in here
     this.deleteCity = this.deleteCity.bind(this);
   }
 
-  deleteCity(event) {
-    console.log(event);
+  deleteCity(event, city) {
+    console.log("*** DeleteCity event:", event, "city=", city);
+    $.ajax({
+      url: "http://localhost:1128/delete",
+      method: "DELETE",
+      data: { city_id: city._id },
+      success: data => {
+        console.log(`*** DELETE: ${city} successfully deleted!`);
+
+        // remake a new list of cities (using delete is not optimal for arrays)
+        let oldCities = this.state.cities;
+        this.state.cities = [];
+        for (let i = 0; i < oldCities.length; i++) {
+          if (oldCities[i]._id !== city._id) {
+            this.state.cities.push(oldCities[i]);
+          }
+        }
+        this.setState({ cities: this.state.cities });
+      }
+    });
   }
 
   search(cityname) {
@@ -25,11 +43,11 @@ class App extends React.Component {
       url: "http://localhost:1128/city",
       method: "POST",
       data: { cityname },
-      success: (city) => {
+      success: city => {
         console.log(`CLIENT: ${cityname} successfully searched!`);
         for (let i of this.state.cities) {
           if (city[0].woeid === i._id) {
-            console.log('City already exists.');
+            console.log("City already exists.");
             return;
           }
         }
@@ -37,7 +55,6 @@ class App extends React.Component {
       }
     });
   }
-
 
   componentDidMount() {
     $.ajax({

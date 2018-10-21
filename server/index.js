@@ -9,7 +9,7 @@ app.use(express.static(__dirname + "/../client/dist"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.post("/city", function (req, res) {
+app.post("/city", function(req, res) {
   // TODO - your code here!
   // This route should take the github username provided
   // and get the repo information from the github API, then
@@ -20,24 +20,23 @@ app.post("/city", function (req, res) {
     if (err) {
       throw err;
     } else {
-      cities.forEach(city => {
-        console.log('cities forEach city=', JSON.stringify(city));
-        db.save(city, (err, newcity) => {
-          if (err) {
-            throw err;
-          } else {
-            console.log(`city added: ${JSON.stringify(city)}`);
-          }
-          res.status(201).send(cities);
-        });
+      console.log("cities city=", JSON.stringify(cities[0]));
+      db.save(cities[0], (err, newcity) => {
+        if (err) {
+          throw err;
+        } else {
+          console.log(`city added: ${JSON.stringify(cities[0])}`);
+        }
+        res.status(201).send(cities);
       });
     }
   });
 });
 
-app.get("/cities", function (req, res) {
+app.get("/cities", function(req, res) {
   // TODO - your code here!
-  // This route should send back the top 25 repos
+  // This route should send back the top 25 hottest cities // todo
+  console.log("*** Get cities");
   db.retrieve((err, cities) => {
     if (err) {
       throw err;
@@ -47,9 +46,21 @@ app.get("/cities", function (req, res) {
   });
 });
 
+app.delete("/delete", function(req, res) {
+  db.delete_city(req.body.city_id, (err, data) => {
+    if (err) {
+      console.log("*** Delete err:", err);
+      res.status(500).end();
+      return;
+    } else {
+      res.status(200).json(data);
+    }
+  });
+});
+
 let port = 1128;
 
-app.listen(port, function () {
+app.listen(port, function() {
   console.log(`listening for weather requests on port ${port}`);
 });
 
