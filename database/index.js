@@ -21,6 +21,10 @@ let City = mongoose.model("City", citySchema);
 let save = (city, callback) => {
   // This function should save a city to
   // the MongoDB
+  if (city === undefined) {
+    callback(404, null);
+    return;
+  }
 
   const newCity = {
     _id: city._id,

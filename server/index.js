@@ -18,12 +18,12 @@ app.post("/city", function(req, res) {
   // console.log(username);
   helpers.getWeatherByCityname(cityname, (err, cities) => {
     if (err) {
-      throw err;
+      console.log("*** City does not exist");
     } else {
       console.log("cities city=", JSON.stringify(cities[0]));
       db.save(cities[0], (err, newcity) => {
         if (err) {
-          throw err;
+          console.log("*** City does not exist");
         } else {
           console.log(`city added: ${JSON.stringify(cities[0])}`);
         }

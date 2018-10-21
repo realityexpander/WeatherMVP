@@ -20,11 +20,13 @@ let getWeatherByCityname = (cityname, callback) => {
   request(options, function(err, res, body) {
     if (!err && res.statusCode === 200) {
       var city = JSON.parse(body);
-      console.log(`data in metaweather request: ${JSON.stringify(city[0])}`);
+      console.log(
+        `*** city[0] from metaweather request: ${JSON.stringify(city[0])}`
+      );
       //city.forEach(city => cities.push(city));
       if (city[0] === undefined) {
         console.log("City not found in metaweather API");
-        callback(null, cities);
+        callback(404, null);
         return;
       }
 
