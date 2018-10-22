@@ -1,4 +1,5 @@
 import React from "react";
+import ForecastItem from "./ForecastItem.jsx";
 
 const City = props => (
   <div>
@@ -29,49 +30,11 @@ const City = props => (
       </td>
     </tr>
 
-    {props.showForecastCity === props.city._id
-      ? props.city.consolidated_weather.map((item, i) => {
-          // console.log(item);
-          return (
-            <table>
-              {i === 0 ? (
-                <tr>
-                  {" "}
-                  <td />
-                  <th>Forecast</th>
-                  <th>Temp</th>
-                  <th>Humidity</th>
-                  <th>Air Pressure</th>
-                  <th>Wind Speed</th>
-                  <th>Visibility</th>
-                  <th>Confidence</th>
-                </tr>
-              ) : (
-                ""
-              )}
-
-              <tr key={item.id}>
-                {" "}
-                <td>
-                  <img
-                    src={
-                      "https://www.metaweather.com/static/img/weather/ico/" +
-                      item.weather_state_abbr +
-                      ".ico"
-                    }
-                    style={{ width: "40%", height: "40%" }}
-                  />
-                </td>
-                <td>{item.weather_state_name}</td>
-                <td>{item.the_temp}</td>
-                <td>{item.humidity}</td>​<td>{item.air_pressure}</td>​
-                <td>{item.wind_speed}</td>​<td>{item.visibility}</td>​
-                <td>{item.predictability}</td>​
-              </tr>
-            </table>
-          );
-        })
-      : ""}
+    {props.showForecastCity === props.city._id ? (
+      <ForecastItem city={props.city} />
+    ) : (
+      ""
+    )}
   </div>
 );
 
