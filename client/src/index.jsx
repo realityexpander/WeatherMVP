@@ -62,9 +62,11 @@ class App extends React.Component {
       data: { cityname },
       success: city => {
         console.log(`CLIENT: ${cityname} successfully searched!`);
-        for (let i of this.state.cities) {
-          if (city[0].woeid === i._id) {
+        for (let i = 0; i < this.state.cities.length; i++) {
+          if (city[0].woeid === this.state.cities[i]._id) {
             console.log("City already exists.");
+            this.state.cities[i] = city[0];
+            this.setState({ cities: this.state.cities });
             return;
           }
         }
