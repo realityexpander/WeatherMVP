@@ -11,7 +11,6 @@ class App extends React.Component {
       cities: [],
       showForecastCity: null
     };
-    // bind delete city in here
     this.deleteCity = this.deleteCity.bind(this);
     this.toggleForecast = this.toggleForecast.bind(this);
   }
