@@ -17,8 +17,9 @@ app.post("/city", function(req, res) {
   const cityname = req.body.cityname;
   // console.log(username);
   helpers.getWeatherByCityname(cityname, (err, cities) => {
-    if (err) {
+    if (err || cityname.length === 0) {
       console.log("*** City does not exist");
+      res.status(404).end();
     } else {
       console.log("cities city=", JSON.stringify(cities[0]));
       db.save(cities[0], (err, newcity) => {

@@ -8,10 +8,27 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cities: []
+      cities: [],
+      showForecastCity: null
     };
     // bind delete city in here
     this.deleteCity = this.deleteCity.bind(this);
+    this.toggleForecast = this.toggleForecast.bind(this);
+  }
+
+  toggleForecast(event, city) {
+    // toggle a single city
+    console.log("*** Forecast show city=", city._id);
+
+    if (this.state.showForecastCity === null)
+      this.state.showForecastCity = city._id;
+    else if (this.state.showForecastCity !== city._id) {
+      this.state.showForecastCity = city._id;
+    } else {
+      this.state.showForecastCity = null;
+    }
+
+    this.setState({ showForecastCity: this.state.showForecastCity }); // todo can just use showForecastCity
   }
 
   deleteCity(event, city) {
@@ -72,7 +89,12 @@ class App extends React.Component {
     return (
       <div>
         <h1>Metaweather MVP</h1>
-        <CityList deleteCity={this.deleteCity} cities={this.state.cities} />
+        <CityList
+          deleteCity={this.deleteCity}
+          cities={this.state.cities}
+          toggleForecast={this.toggleForecast}
+          showForecastCity={this.state.showForecastCity}
+        />
         <Search onSearch={this.search.bind(this)} />
       </div>
     );

@@ -8,12 +8,14 @@ mongoose.connect(
 );
 
 let citySchema = mongoose.Schema({
-  _id: Number, //woeid
+  _id: Number, // same as woeid
   woeid: Number,
   title: String,
   temperature: Number,
   cur_weather: String,
-  weather_description: String
+  weather_description: String,
+  humidity: Number,
+  consolidated_weather: Array
 });
 
 let City = mongoose.model("City", citySchema);
@@ -32,7 +34,9 @@ let save = (city, callback) => {
     title: city.title,
     temperature: city.temperature,
     cur_weather: city.cur_weather,
-    weather_description: city.weather_description
+    weather_description: city.weather_description,
+    humidity: city.consolidated_weather[0].humidity,
+    consolidated_weather: city.consolidated_weather
   };
 
   console.log(`*** newCity: ${JSON.stringify(newCity)}`);

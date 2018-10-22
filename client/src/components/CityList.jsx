@@ -7,8 +7,16 @@ const CityList = props => (
     <table>
       <tbody>
         {props.cities[0]
-          ? props.cities.map((city, i) => <City deleteCity={props.deleteCity} city={city} key={i} />)
-          : ""}
+          ? props.cities.map((city, i) => (
+              <City
+                deleteCity={props.deleteCity}
+                toggleForecast={props.toggleForecast}
+                showForecastCity={props.showForecastCity}
+                city={city}
+                key={i}
+              />
+            ))
+          : "[No Cities Being Tracked]"}
       </tbody>
     </table>
   </div>
